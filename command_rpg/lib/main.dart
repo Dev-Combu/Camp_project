@@ -1,9 +1,4 @@
-import 'dart:convert';
 import 'dart:io';
-import 'dart:async';
-import 'dart:math';
-
-import 'package:csv/csv.dart';
 
 getCharacterName() {
   stdout.write("캐릭터의 이름을 입려하세요: ");
@@ -15,16 +10,12 @@ getCharacterName() {
     inumber = stdin.readLineSync()!;
     //bool checknull = inumber == EmptyValue ? false : true;
     var match = exp.hasMatch(inumber);
-    // if (checknull) {
-    //   print("문자를 입력해주십시오");
-    // } else {
       if (match) {
         loop = false;
         return inumber;
       } else {
         print("한글, 영문 대소문자만 사용가능합니다. ");
       }
-    // }
   }
 }
 
@@ -64,8 +55,9 @@ loadMonsterStats() {
       String monsterName = stats[0]; // 몬스터 이름
       int monsterHp = int.parse(stats[1]); // 몬스터 HP
       int attackMax = int.parse(stats[2]); // 최대 공격력
+      int defense = 0;
 
-      Monster monster = Monster(monsterName, monsterHp, attackMax);
+      Monster monster = Monster(monsterName, monsterHp, attackMax, defense);
       monsters.add(monster); // 몬스터 리스트에 추가
     }
     return monsters;
@@ -84,27 +76,32 @@ class Game {
   //int
 
   startGame() {
-    print(character.name+" - 체력: "+character.health.toString()+", 공격력: "+ character.attack.toString()+", 방어력: "+character.health.toString());
+    character.showStatus();
+    print(monsters[1]);
     //print(monster[1]);
     battle();
   }
 
   void battle() {
     String? choice;
-
-    while(true){
+    bool play = true;
+    var save = File('lib/text/result.txt');
+    while(play){
       print("공격하기(1), 방어하기(2)");
       choice = stdin.readLineSync()!;
       switch(choice){
         case '1':
-        character.attackMonster(monster);
+        //character.attackMonster(monster);
         print("공격");
         case '2':
         //character.defend();
         print("방어");
       }
+      if(play){
+        play = false;
+      }
     }
-
+    save.writeAsStringSync(character.toString());
   }
   void getRandomMonster() {
     var random = monsters.shuffle();
@@ -115,6 +112,7 @@ class Game {
 
 //캐릭터를 정의하기 위한 클래스
 class Character {
+
   String name;
   int health;
   int attack;
@@ -127,20 +125,26 @@ class Character {
   }
 
   void defend() {}
-  void showStatus() {}
+  void showStatus() {
+    print(name+" - 체력: "+health.toString()+", 공격력: "+ attack.toString()+", 방어력: "+health.toString());
+  }
 }
 
 //몬스터를 정의하기 위한 클래스
 class Monster {
+
   String monsterName;
   int monsterHp;
   int attackMax;
+  int defense;
 
-  Monster(this.monsterName, this.monsterHp, this.attackMax);
+  Monster(this.monsterName, this.monsterHp, this.attackMax, this.defense);
 
   void attackCharacter(Character character) {}
 
-  void showStatus() {}
+  void showStatus() {
+    print(monsterName+" - 체력: "+ monsterHp.toString() +", 공격력: ");
+  }
 }
 
 void main() {
