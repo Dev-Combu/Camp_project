@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:math';
 
 getCharacterName() {
   stdout.write("캐릭터의 이름을 입려하세요: ");
@@ -55,9 +56,10 @@ loadMonsterStats() {
       String monsterName = stats[0]; // 몬스터 이름
       int monsterHp = int.parse(stats[1]); // 몬스터 HP
       int attackMax = int.parse(stats[2]); // 최대 공격력
+      int attack = Random().nextInt(attackMax);
       int defense = 0;
 
-      Monster monster = Monster(monsterName, monsterHp, attackMax, defense);
+      Monster monster = Monster(monsterName, monsterHp, attack, defense);
       monsters.add(monster); // 몬스터 리스트에 추가
     }
     return monsters;
@@ -71,13 +73,15 @@ loadMonsterStats() {
 class Game {
   Character character = loadCharacterStats();
   List<Monster> monsters = loadMonsterStats();
+  int i = 0;
 
   //List<List<Monster>>
   //int
 
   startGame() {
     character.showStatus();
-    print(monsters[1]);
+    print(monsters[1].monsterName);
+    print(monsters[1].attackMax);
     //print(monster[1]);
     battle();
   }
