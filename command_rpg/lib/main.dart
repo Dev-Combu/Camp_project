@@ -90,7 +90,7 @@ class Game {
 
     String? choice;
     bool play = true;
-    
+    int i =1;
     var save = File('lib/text/result.txt');
     while (play) {
       bool turn = true;
@@ -98,11 +98,6 @@ class Game {
       print("새로운 몬스터가 나타낫습니다.");
       ranMonster.showStatus();
       print('');
-      int i =1;
-      i ++;
-      if(i==3){
-        print("축하합니다? 모든? 몬스터?를 물리쳤습니다.");
-      };
       while (turn) {
         //캐릭터 턴
         print(character.name + "의 턴");
@@ -125,16 +120,23 @@ class Game {
           
         } else {
           print(ranMonster.monsterName + "을 물리쳤습니다.");
-
+          i += 1;
+          if(i>3){
+            play = false;
+            turn = false;
+            print("축하합니다? 모든? 몬스터?를 물리쳤습니다.");
+          }else{
           print("다음 몬스터와 싸우시겠습니까? (y/n)");
 
           String? next = stdin.readLineSync()!;
           switch (next) {
             case 'y':
               turn = false;
+              
             case 'n':
               play = false;
               turn = false;
+          }
           }
         }
 
