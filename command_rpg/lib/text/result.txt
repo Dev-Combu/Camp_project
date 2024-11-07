@@ -1,1 +1,1 @@
-Instance of 'Character'
+바보,50,50,50

@@ -105,7 +105,8 @@ class Game {
         play = false;
       }
     }
-    save.writeAsStringSync(character.toString());
+    
+    save.writeAsString(character.name+","+character.attack.toString()+","+character.health.toString()+","+character.defense.toString());
   }
   void getRandomMonster() {
     var random = monsters.shuffle();
